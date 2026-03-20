@@ -664,7 +664,7 @@ const MACConsultation = ({ onBack }) => {
 
 const RemoteMonitoring = ({ onBack }) => {
   const [activeTab, setActiveTab] = React.useState('overview'); // overview, vitals, meds
-  const [vitals, setVitals] = React.useState({ pulse: 72, spo2: 98, temp: 36.6 });
+  const [vitals, setVitals] = React.useState({ pulse: 72, spo2: 98, temp: 36.6, bp: '120/80' });
   const [showAlert, setShowAlert] = React.useState(true);
   const [isSyncing, setIsSyncing] = React.useState(false);
   const [meds, setMeds] = React.useState([
@@ -682,7 +682,7 @@ const RemoteMonitoring = ({ onBack }) => {
     setIsSyncing(true);
     setTimeout(() => {
       setIsSyncing(false);
-      setVitals({ pulse: 68 + Math.floor(Math.random() * 10), spo2: 97 + Math.floor(Math.random() * 3), temp: 36.5 });
+      setVitals({ pulse: 68 + Math.floor(Math.random() * 10), spo2: 97 + Math.floor(Math.random() * 3), temp: 36.5, bp: '118/79' });
     }, 2000);
   };
 
@@ -703,25 +703,25 @@ const RemoteMonitoring = ({ onBack }) => {
       <div className="monitor-content">
         <AnimatePresence mode="wait">
           {activeTab === 'overview' && (
-            <motion.div key="overview" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+            <motion.div key="overview" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
               {showAlert && (
-                <div className="ai-health-alert">
+                <motion.div className="ai-health-alert" initial={{ scale: 0.9 }} animate={{ scale: 1 }}>
                   <div className="alert-header">
                     <Sparkles size={16} />
                     <span>AI Health Insight</span>
                     <button className="close-alert" onClick={() => setShowAlert(false)}><X size={14} /></button>
                   </div>
                   <p>Your Pulse Rate was slightly elevated this morning. Make sure to stay hydrated and rest for 15 minutes before next measurement.</p>
-                </div>
+                </motion.div>
               )}
 
               <div className="monitoring-status">
                 <div className="status-item">
                   <div className="label">Recovery Progress</div>
                   <div className="progress-bar">
-                    <div className="progress-fill" style={{ width: '65%' }}></div>
+                    <motion.div className="progress-fill" initial={{ width: 0 }} animate={{ width: '65%' }} transition={{ duration: 1.5, ease: "easeOut" }}></motion.div>
                   </div>
-                  <div className="value">65% Recovered</div>
+                  <div className="value">65% Successfully Recovered</div>
                 </div>
               </div>
 
@@ -740,26 +740,35 @@ const RemoteMonitoring = ({ onBack }) => {
                     <span className="v-val">{vitals.spo2}%</span>
                   </div>
                 </div>
+                <div className="vital-mini-card" style={{ gridColumn: 'span 2' }}>
+                  <div className="v-icon" style={{ background: 'rgba(168, 85, 247, 0.1)', color: '#a855f7' }}><History size={16} /></div>
+                  <div className="v-info">
+                    <span className="v-label">Last Blood Pressure</span>
+                    <span className="v-val">{vitals.bp} mmHg</span>
+                  </div>
+                </div>
               </div>
 
               <div className="upcoming-med">
                 <h4>Next Medication</h4>
                 {meds.filter(m => m.status === 'pending').slice(0, 1).map(m => (
-                  <div key={m.id} className="med-reminder-card">
-                    <Clock size={20} color="#0072bc" />
+                  <motion.div key={m.id} className="med-reminder-card" whileHover={{ scale: 1.02 }}>
+                    <div className="med-icon-box" style={{ background: '#f0f9ff', padding: 10, borderRadius: 12 }}>
+                      <Clock size={24} color="#0072bc" />
+                    </div>
                     <div className="med-info">
                       <strong>{m.name}</strong>
-                      <span>Today, {m.time}</span>
+                      <span>Today, {m.time} • Post-meal</span>
                     </div>
-                    <button className="btn-take" onClick={() => handleTakeMed(m.id)}>Take Now</button>
-                  </div>
+                    <button className="btn-take" onClick={() => handleTakeMed(m.id)}>Take</button>
+                  </motion.div>
                 ))}
               </div>
             </motion.div>
           )}
 
           {activeTab === 'vitals' && (
-            <motion.div key="vitals" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="vitals-tab">
+            <motion.div key="vitals" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="vitals-tab">
               <div className="vitals-header">
                 <h3>Vitals Tracking</h3>
                 <motion.div 
@@ -767,13 +776,13 @@ const RemoteMonitoring = ({ onBack }) => {
                   onClick={handleSync}
                   whileTap={{ scale: 0.95 }}
                 >
-                  <img src="https://www.gstatic.com/images/branding/product/1x/googleg_48dp.png" alt="Google" className="g-logo" />
+                  <img src="https://www.gstatic.com/images/branding/product/1x/googleg_48dp.png" alt="Google" className="g-logo" width={20} />
                   <span>{isSyncing ? 'Syncing...' : 'Sync Google Fit'}</span>
                 </motion.div>
               </div>
 
               <div className="vitals-grid">
-                <div className="vital-input-card">
+                <motion.div className="vital-input-card" whileHover={{ y: -5 }}>
                   <div className="input-header">
                     <Wifi size={20} color="#ef4444" />
                     <strong>Heart Rate</strong>
@@ -783,8 +792,8 @@ const RemoteMonitoring = ({ onBack }) => {
                     <span className="unit">BPM</span>
                   </div>
                   <div className="v-trend up">↑ 2bpm from yesterday</div>
-                </div>
-                <div className="vital-input-card">
+                </motion.div>
+                <motion.div className="vital-input-card" whileHover={{ y: -5 }}>
                   <div className="input-header">
                     <Shield size={20} color="#3b82f6" />
                     <strong>Blood Oxygen</strong>
@@ -794,16 +803,16 @@ const RemoteMonitoring = ({ onBack }) => {
                     <span className="unit">%</span>
                   </div>
                   <div className="v-trend stable">No change</div>
-                </div>
+                </motion.div>
               </div>
 
-              <button className="btn-primary-outline" style={{ marginTop: 24, width: '100%' }} onClick={() => setShowLogModal(true)}>
+              <button className="btn-primary-outline" style={{ marginTop: 24, width: '100%', borderRadius: 12, height: 50 }} onClick={() => setShowLogModal(true)}>
                 <Plus size={18} /> Log Vitals Manually
               </button>
 
               {showLogModal && (
                 <div className="modal-overlay">
-                  <motion.div className="log-modal" initial={{ y: 50 }} animate={{ y: 0 }}>
+                  <motion.div className="log-modal" initial={{ y: 100, opacity: 0 }} animate={{ y: 0, opacity: 1 }}>
                     <h3>Log Your Vitals</h3>
                     <div className="input-group">
                       <label>Blood Pressure (mmHg)</label>
@@ -815,7 +824,7 @@ const RemoteMonitoring = ({ onBack }) => {
                     </div>
                     <div className="modal-actions">
                       <button className="btn-cancel" onClick={() => setShowLogModal(false)}>Cancel</button>
-                      <button className="btn-save" onClick={() => setShowLogModal(false)}>Save</button>
+                      <button className="btn-save" onClick={() => setShowLogModal(false)}>Save Data</button>
                     </div>
                   </motion.div>
                 </div>
@@ -824,20 +833,20 @@ const RemoteMonitoring = ({ onBack }) => {
           )}
 
           {activeTab === 'meds' && (
-            <motion.div key="meds" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="meds-tab">
+            <motion.div key="meds" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="meds-tab">
               <h3>Medication Schedule</h3>
               <div className="med-list">
-                {meds.map((m, i) => (
-                  <div key={m.id} className={`med-item-v2 ${m.status}`}>
+                {meds.map((m) => (
+                  <motion.div key={m.id} className={`med-item-v2 ${m.status}`} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
                     <div className="med-status-icon">
                       {m.status === 'taken' ? <Check size={16} /> : <div className="dot"></div>}
                     </div>
                     <div className="med-name-v2">
                       <strong>{m.name}</strong>
-                      <span>{m.time}</span>
+                      <span>Scheduled for {m.time}</span>
                     </div>
-                    {m.status === 'pending' && <button className="btn-small" onClick={() => handleTakeMed(m.id)}>Take</button>}
-                  </div>
+                    {m.status === 'pending' && <button className="btn-small" onClick={() => handleTakeMed(m.id)}>Mark Taken</button>}
+                  </motion.div>
                 ))}
               </div>
             </motion.div>
