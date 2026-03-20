@@ -45,7 +45,7 @@ const PermissionsScreen = ({ onContinue }) => {
   ];
 
   return (
-    <motion.div 
+    <motion.div
       className="permissions-screen"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -54,8 +54,8 @@ const PermissionsScreen = ({ onContinue }) => {
       <div className="permissions-header">
         <img src={logo} alt="My Care" className="logo" />
       </div>
-      
-      <motion.div 
+
+      <motion.div
         className="permissions-card"
         initial={{ y: 50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -90,7 +90,7 @@ const PermissionsScreen = ({ onContinue }) => {
 
 const OnboardingFlow = ({ onFinish }) => {
   const [currentSlide, setCurrentSlide] = React.useState(0);
-  
+
   const slides = [
     {
       title: "Easier To Make an Appointment",
@@ -115,7 +115,7 @@ const OnboardingFlow = ({ onFinish }) => {
   };
 
   return (
-    <motion.div 
+    <motion.div
       className="onboarding-screen"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -130,7 +130,7 @@ const OnboardingFlow = ({ onFinish }) => {
         <img src={onboardingImg} alt="Medical Team" />
       </div>
 
-      <motion.div 
+      <motion.div
         key={currentSlide}
         className="onboarding-card"
         initial={{ x: 50, opacity: 0 }}
@@ -183,7 +183,7 @@ const AITriage = ({ onBack, onStartVideo }) => {
       ]);
       const response = await result.response;
       const aiText = response.text();
-      
+
       setMessages(prev => [...prev, { role: 'ai', text: aiText, hasAction: true }]);
     } catch (error) {
       setMessages(prev => [...prev, { role: 'ai', text: "I'm sorry, I'm having trouble connecting to my medical database. Please try again or call our emergency line." }]);
@@ -205,8 +205,8 @@ const AITriage = ({ onBack, onStartVideo }) => {
 
       <div className="chat-area">
         {messages.map((m, i) => (
-          <motion.div 
-            key={i} 
+          <motion.div
+            key={i}
             className={`chat-bubble ${m.role}`}
             initial={{ opacity: 0, scale: 0.9, y: 10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -229,9 +229,9 @@ const AITriage = ({ onBack, onStartVideo }) => {
       </div>
 
       <div className="chat-input-area">
-        <input 
-          type="text" 
-          placeholder="Describe your symptoms..." 
+        <input
+          type="text"
+          placeholder="Describe your symptoms..."
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyPress={(e) => e.key === 'Enter' && handleSend()}
@@ -265,7 +265,7 @@ const AIVoiceCall = ({ onBack, onStartVideo }) => {
   };
 
   return (
-    <motion.div 
+    <motion.div
       className="ai-voice-screen"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -277,7 +277,7 @@ const AIVoiceCall = ({ onBack, onStartVideo }) => {
       </header>
 
       <div className="voice-main">
-        <motion.div 
+        <motion.div
           className="voice-pulse-outer"
           animate={{ scale: pulse }}
           transition={{ duration: 0.6, ease: "easeInOut" }}
@@ -315,7 +315,7 @@ const VideoConsultation = ({ onEnd }) => {
   const [showRecords, setShowRecords] = React.useState(false);
 
   return (
-    <motion.div 
+    <motion.div
       className="video-consult-screen"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -330,8 +330,8 @@ const VideoConsultation = ({ onEnd }) => {
             <p className="status-online">● Online | Cardiovascular Center</p>
           </div>
         </div>
-        
-        <motion.div 
+
+        <motion.div
           className="user-feed"
           drag
           dragConstraints={{ top: 0, left: 0, right: 0, bottom: 0 }}
@@ -341,7 +341,7 @@ const VideoConsultation = ({ onEnd }) => {
 
         <AnimatePresence>
           {showRecords && (
-            <motion.div 
+            <motion.div
               className="medical-records-overlay"
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
@@ -369,7 +369,7 @@ const VideoConsultation = ({ onEnd }) => {
 
         <AnimatePresence>
           {showChat && (
-            <motion.div 
+            <motion.div
               className="video-chat-overlay"
               initial={{ y: '100%' }}
               animate={{ y: 0 }}
@@ -405,7 +405,7 @@ const VideoConsultation = ({ onEnd }) => {
         <button className="control-btn-v2 video"><Video size={24} /></button>
         <button className="control-btn-v2 end" onClick={onEnd}><Phone size={24} className="rotate-end" /></button>
       </div>
-      
+
       <div className="encryption-tip">
         <Shield size={12} />
         <span>Secure end-to-end encrypted connection</span>
@@ -460,110 +460,6 @@ const AIInteractionSelection = ({ onSelectChat, onSelectVoice, onBack }) => {
           </div>
           <ChevronRight size={24} />
         </motion.button>
-      </div>
-    </motion.div>
-  );
-};
-
-
-const PostDischargeMonitoring = ({ onBack }) => {
-  const [vitals, setVitals] = React.useState({ bp: '120/80', hr: '72', spo2: '98' });
-  const [isSyncing, setIsSyncing] = React.useState(false);
-
-  const medications = [
-    { name: 'Amlodipine 5mg', time: '08:00 AM', taken: true },
-    { name: 'Atorvastatin 20mg', time: '09:00 PM', taken: false },
-    { name: 'Clopidogrel 75mg', time: '08:00 AM', taken: true }
-  ];
-
-  const handleSync = () => {
-    setIsSyncing(true);
-    setTimeout(() => {
-      setIsSyncing(false);
-      setVitals({ bp: '118/79', hr: '68', spo2: '99' });
-    }, 2000);
-  };
-
-  return (
-    <motion.div className="monitoring-screen" initial={{ x: '100%' }} animate={{ x: 0 }}>
-      <header className="ai-header">
-        <button className="btn-icon" onClick={onBack}><X size={24} /></button>
-        <div className="ai-title">Remote Monitoring</div>
-        <div style={{ width: 24 }}></div>
-      </header>
-
-      <div className="monitoring-content">
-        {/* AI Health Alert Card */}
-        <motion.div 
-          className="health-alert-card"
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-        >
-          <div className="alert-header">
-            <Sparkles size={18} color="#0d9488" />
-            <span>AI Health Insight</span>
-          </div>
-          <p>Your recovery is progressing well. Heart rate is stable. Keep maintaining your hydration and light activity levels.</p>
-        </motion.div>
-
-        {/* Vitals Grid */}
-        <section className="vitals-section">
-          <div className="section-header">
-            <h3>Vital Signs</h3>
-            <button className={`sync-btn ${isSyncing ? 'syncing' : ''}`} onClick={handleSync}>
-              <Wifi size={16} /> {isSyncing ? 'Syncing...' : 'Sync Fit'}
-            </button>
-          </div>
-          <div className="vitals-grid">
-            <div className="vital-card">
-              <span className="label">Blood Pressure</span>
-              <span className="value">{vitals.bp}</span>
-              <span className="unit">mmHg</span>
-            </div>
-            <div className="vital-card">
-              <span className="label">Heart Rate</span>
-              <span className="value">{vitals.hr}</span>
-              <span className="unit">bpm</span>
-            </div>
-            <div className="vital-card">
-              <span className="label">SpO2</span>
-              <span className="value">{vitals.spo2}</span>
-              <span className="unit">%</span>
-            </div>
-          </div>
-        </section>
-
-        {/* Medication Reminders */}
-        <section className="medication-section">
-          <h3>Daily Medications</h3>
-          <div className="med-list">
-            {medications.map((med, i) => (
-              <div key={i} className={`med-item ${med.taken ? 'done' : ''}`}>
-                <div className="med-info">
-                  <strong>{med.name}</strong>
-                  <span>{med.time}</span>
-                </div>
-                {med.taken ? (
-                  <div className="med-status done"><Check size={18} /></div>
-                ) : (
-                  <button className="med-status-btn">Take</button>
-                )}
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Discharge Summary */}
-        <section className="summary-section">
-          <div className="doc-item">
-            <Folder size={20} color="#64748b" />
-            <div className="doc-info">
-              <strong>Post-Discharge Protocol</strong>
-              <span>Last updated: Yesterday</span>
-            </div>
-            <ChevronRight size={18} color="#cbd5e1" />
-          </div>
-        </section>
       </div>
     </motion.div>
   );
@@ -628,7 +524,7 @@ const MACConsultation = ({ onBack }) => {
       <div className="macc-content">
         <AnimatePresence mode="wait">
           {subStep === 'intro' && (
-            <motion.div 
+            <motion.div
               key="intro"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -669,7 +565,7 @@ const MACConsultation = ({ onBack }) => {
           )}
 
           {subStep === 'form' && (
-            <motion.div 
+            <motion.div
               key="form"
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -679,7 +575,7 @@ const MACConsultation = ({ onBack }) => {
               <h3>Tell us about your case</h3>
               <p>Your history will be summarized by our specialists for the Apollo team.</p>
               <textarea placeholder="e.g. Chronic chest pain for 3 months, history of hypertension..." rows="8"></textarea>
-              <motion.div 
+              <motion.div
                 className="file-upload-dummy"
                 whileTap={{ scale: 0.98 }}
               >
@@ -693,7 +589,7 @@ const MACConsultation = ({ onBack }) => {
           )}
 
           {subStep === 'timeline' && (
-            <motion.div 
+            <motion.div
               key="timeline"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -703,8 +599,8 @@ const MACConsultation = ({ onBack }) => {
               <h3>MACC Tracking ID: #MP-AP-2026</h3>
               <div className="timeline-container">
                 {steps.map((s, i) => (
-                  <motion.div 
-                    key={i} 
+                  <motion.div
+                    key={i}
                     className={`timeline-step ${s.status}`}
                     initial={{ opacity: 0, x: -10 }}
                     animate={{ opacity: 1, x: 0 }}
@@ -716,13 +612,13 @@ const MACConsultation = ({ onBack }) => {
                     <div className="step-label">
                       <strong>{s.label}</strong>
                       <p>
-                        {s.status === 'current' 
-                          ? i === 1 ? 'Specialist reviewing documentation...' 
-                            : i === 2 ? 'Apollo India desk processing assignment...' 
-                            : i === 3 ? 'Ready for multi-disciplinary meeting.'
-                            : 'Awaiting submission...'
-                          : s.status === 'done' ? 'Stage completed successfully' 
-                          : 'Awaiting previous stages'}
+                        {s.status === 'current'
+                          ? i === 1 ? 'Specialist reviewing documentation...'
+                            : i === 2 ? 'Apollo India desk processing assignment...'
+                              : i === 3 ? 'Ready for multi-disciplinary meeting.'
+                                : 'Awaiting submission...'
+                          : s.status === 'done' ? 'Stage completed successfully'
+                            : 'Awaiting previous stages'}
                       </p>
                     </div>
                   </motion.div>
@@ -730,7 +626,7 @@ const MACConsultation = ({ onBack }) => {
               </div>
 
               {stage >= 2 && (
-                <motion.div 
+                <motion.div
                   className="timeline-action-card"
                   initial={{ scale: 0.95, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
@@ -746,7 +642,7 @@ const MACConsultation = ({ onBack }) => {
                     <Clock size={16} />
                     <span>{stage === 4 ? 'Status: READY' : 'Next update in approx. 12-24 hours'}</span>
                   </div>
-                  
+
                   {stage < 4 ? (
                     <button className="btn-secondary-outline" onClick={handleNextStage}>
                       [Demo] Advance to Next Stage
@@ -755,7 +651,7 @@ const MACConsultation = ({ onBack }) => {
                     <button className="btn-primary" style={{ marginTop: 16 }} onClick={() => setSubStep('video')}>
                       Join 3-Way Video Conference
                     </button>
-                  ) }
+                  )}
                 </motion.div>
               )}
             </motion.div>
@@ -766,6 +662,152 @@ const MACConsultation = ({ onBack }) => {
   );
 };
 
+const RemoteMonitoring = ({ onBack }) => {
+  const [activeTab, setActiveTab] = React.useState('overview'); // overview, vitals, meds
+  const [vitals, setVitals] = React.useState({ pulse: 72, spo2: 98, temp: 36.6 });
+  const [showAlert, setShowAlert] = React.useState(true);
+
+  const meds = [
+    { name: 'Amlodipine 5mg', time: '08:00 AM', status: 'taken' },
+    { name: 'Metformin 500mg', time: '12:30 PM', status: 'pending' },
+    { name: 'Atorvastatin 20mg', time: '09:00 PM', status: 'pending' }
+  ];
+
+  return (
+    <motion.div className="remote-monitor-screen" initial={{ x: '100%' }} animate={{ x: 0 }}>
+      <header className="ai-header">
+        <button className="btn-icon" onClick={onBack}><X size={24} /></button>
+        <div className="ai-title">Recovery Monitoring</div>
+        <div style={{ width: 24 }}></div>
+      </header>
+
+      <div className="monitor-tabs">
+        <button className={activeTab === 'overview' ? 'active' : ''} onClick={() => setActiveTab('overview')}>Overview</button>
+        <button className={activeTab === 'vitals' ? 'active' : ''} onClick={() => setActiveTab('vitals')}>Vitals</button>
+        <button className={activeTab === 'meds' ? 'active' : ''} onClick={() => setActiveTab('meds')}>Medications</button>
+      </div>
+
+      <div className="monitor-content">
+        <AnimatePresence mode="wait">
+          {activeTab === 'overview' && (
+            <motion.div key="overview" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+              {showAlert && (
+                <div className="ai-health-alert">
+                  <div className="alert-header">
+                    <Sparkles size={16} />
+                    <span>AI Health Insight</span>
+                    <button className="close-alert" onClick={() => setShowAlert(false)}><X size={14} /></button>
+                  </div>
+                  <p>Your Pulse Rate was slightly elevated this morning. Make sure to stay hydrated and rest for 15 minutes before next measurement.</p>
+                </div>
+              )}
+
+              <div className="monitoring-status">
+                <div className="status-item">
+                  <div className="label">Recovery Progress</div>
+                  <div className="progress-bar">
+                    <div className="progress-fill" style={{ width: '65%' }}></div>
+                  </div>
+                  <div className="value">65% Recovered</div>
+                </div>
+              </div>
+
+              <div className="vitals-summary">
+                <div className="vital-mini-card">
+                  <div className="v-icon pulse"><Wifi size={16} /></div>
+                  <div className="v-info">
+                    <span className="v-label">Pulse</span>
+                    <span className="v-val">{vitals.pulse} bpm</span>
+                  </div>
+                </div>
+                <div className="vital-mini-card">
+                  <div className="v-icon spo2"><Shield size={16} /></div>
+                  <div className="v-info">
+                    <span className="v-label">SpO2</span>
+                    <span className="v-val">{vitals.spo2}%</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="upcoming-med">
+                <h4>Next Medication</h4>
+                <div className="med-reminder-card">
+                  <Clock size={20} color="#0072bc" />
+                  <div className="med-info">
+                    <strong>Metformin 500mg</strong>
+                    <span>Today, 12:30 PM • Post-Lunch</span>
+                  </div>
+                  <button className="btn-take">Take Now</button>
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {activeTab === 'vitals' && (
+            <motion.div key="vitals" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="vitals-tab">
+              <div className="vitals-header">
+                <h3>Vitals Tracking</h3>
+                <div className="google-fit-sync">
+                  <img src="https://www.gstatic.com/images/branding/product/1x/googleg_48dp.png" alt="Google" className="g-logo" />
+                  Connected to Google Fit
+                </div>
+              </div>
+
+              <div className="vitals-grid">
+                <div className="vital-input-card">
+                  <div className="input-header">
+                    <Wifi size={20} color="#ef4444" />
+                    <strong>Heart Rate</strong>
+                  </div>
+                  <div className="input-body">
+                    <span className="val">{vitals.pulse}</span>
+                    <span className="unit">BPM</span>
+                  </div>
+                  <div className="v-trend up">↑ 2bpm from yesterday</div>
+                </div>
+                <div className="vital-input-card">
+                  <div className="input-header">
+                    <Shield size={20} color="#3b82f6" />
+                    <strong>Blood Oxygen</strong>
+                  </div>
+                  <div className="input-body">
+                    <span className="val">{vitals.spo2}</span>
+                    <span className="unit">%</span>
+                  </div>
+                  <div className="v-trend stable">No change</div>
+                </div>
+              </div>
+
+              <button className="btn-primary-outline" style={{ marginTop: 24, width: '100%' }}>
+                <Plus size={18} /> Log Vitals Manually
+              </button>
+            </motion.div>
+          )}
+
+          {activeTab === 'meds' && (
+            <motion.div key="meds" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="meds-tab">
+              <h3>Medication Schedule</h3>
+              <div className="med-list">
+                {meds.map((m, i) => (
+                  <div key={i} className={`med-item-v2 ${m.status}`}>
+                    <div className="med-status-icon">
+                      {m.status === 'taken' ? <Check size={16} /> : <div className="dot"></div>}
+                    </div>
+                    <div className="med-name-v2">
+                      <strong>{m.name}</strong>
+                      <span>{m.time}</span>
+                    </div>
+                    {m.status === 'pending' && <button className="btn-small">Take</button>}
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </motion.div>
+  );
+};
 
 const App = () => {
   const [step, setStep] = React.useState('home'); // HIDE (onboarding/permissions) FOR TESTING
@@ -795,8 +837,8 @@ const App = () => {
     return <MACConsultation onBack={() => setStep('home')} />;
   }
 
-  if (step === 'post-discharge') {
-    return <PostDischargeMonitoring onBack={() => setStep('home')} />;
+  if (step === 'remote-monitor') {
+    return <RemoteMonitoring onBack={() => setStep('home')} />;
   }
 
   return (
@@ -815,7 +857,7 @@ const App = () => {
       <main className="main-content">
         {/* MyCare AI 2.0 Banner */}
         <div className="ai-banner-wrapper">
-          <motion.section 
+          <motion.section
             className="ai-banner"
             whileTap={{ scale: 0.98 }}
             onClick={() => setShowAISelection(!showAISelection)}
@@ -830,7 +872,7 @@ const App = () => {
 
           <AnimatePresence>
             {showAISelection && (
-              <motion.div 
+              <motion.div
                 className="ai-selection-overlay"
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -865,22 +907,14 @@ const App = () => {
         {/* Greeting Section */}
         <section className="greeting-card">
           <h2>Hello, Good Evening</h2>
-          
+
           <div className="quick-actions">
-            <section className="services-grid">
-          <div className="service-card" onClick={() => setStep('post-discharge')}>
-            <div className="service-icon monitoring">
-              <Wifi size={24} color="#0d9488" />
-            </div>
-            <span>Remote Monitoring</span>
-          </div>
-          <div className="service-card">
-            <div className="service-icon doctor">
-              <img src={medicalCheckup} alt="Medical Checkup" />
-            </div>
-            <span>Medical Checkup</span>
-          </div>
-          </section>
+            <motion.div className="action-item" whileHover={{ y: -5 }} whileTap={{ scale: 0.95 }}>
+              <div className="icon-circle">
+                <img src={medicalCheckup} alt="Medical Checkup" />
+              </div>
+              <span>Medical Checkup</span>
+            </motion.div>
             <motion.div className="action-item" whileHover={{ y: -5 }} whileTap={{ scale: 0.95 }}>
               <div className="icon-circle">
                 <img src={findDoctor} alt="Find Doctor" />
@@ -903,7 +937,7 @@ const App = () => {
         </section>
 
         {/* Sync Data Banner */}
-        <motion.section 
+        <motion.section
           className="sync-banner"
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -944,21 +978,237 @@ const App = () => {
           <div className="section-header">
             <h3>Personal Health</h3>
           </div>
-          
-        <motion.div 
-          className="health-card"
-          whileHover={{ x: 5 }}
-          whileTap={{ scale: 0.98 }}
+
+          <motion.div
+            className="health-card"
+            whileHover={{ x: 5 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => setStep('remote-monitor')}
+          >
+            <div className="health-card-icon">
+              <img src={healthTracker} alt="Health Tracker" />
+            </div>
+            <div className="health-card-body">
+              <h4>Recovery Monitoring</h4>
+              <p>Automated follow-ups & vitals tracking</p>
+            </div>
+            <button className="btn-connect">View</button>
+          </motion.div>
+        </section>
+
+        {/* Emergency Call */}
+        <section className="emergency-call">
+          <div className="emergency-btn">
+            <span>Emergency Call</span>
+            <ChevronRight size={20} />
+          </div>
+        </section>
+      </main>
+
+      <nav className="bottom-nav">
+        <div className="nav-item active">
+          <Home size={24} />
+          <span>Home</span>
+        </div>
+        <div className="nav-item">
+          <Calendar size={24} />
+          <span>Booking</span>
+        </div>
+        <div className="nav-item">
+          <History size={24} />
+          <span>History</span>
+        </div>
+        <div className="nav-item">
+          <User size={24} />
+          <span>Profile</span>
+        </div>
+      </nav>
+    </div>
+  );
+};
+
+export default App;
+  const [step, setStep] = React.useState('home'); // HIDE (onboarding/permissions) FOR TESTING
+  const [showAISelection, setShowAISelection] = React.useState(false);
+
+  if (step === 'permissions') {
+    return <PermissionsScreen onContinue={() => setStep('onboarding')} />;
+  }
+
+  if (step === 'onboarding') {
+    return <OnboardingFlow onFinish={() => setStep('home')} />;
+  }
+
+  if (step === 'ai-triage') {
+    return <AITriage onBack={() => setStep('home')} onStartVideo={() => setStep('video-consult')} />;
+  }
+
+  if (step === 'ai-voice') {
+    return <AIVoiceCall onBack={() => setStep('home')} onStartVideo={() => setStep('video-consult')} />;
+  }
+
+  if (step === 'video-consult') {
+  if (step === 'macc') {
+    return <MACConsultation onBack={() => setStep('home')} />;
+  }
+
+  if (step === 'remote-monitor') {
+    return <RemoteMonitoring onBack={() => setStep('home')} />;
+  }
+
+  return (
+    <div className="app-container animate-fade-in">
+      {/* Header */}
+      <header className="header">
+        <div className="header-content">
+          <img src={logo} alt="My Care" className="logo" />
+          <div className="notification-wrapper">
+            <Bell size={24} color="white" />
+            <span className="notification-dot"></span>
+          </div>
+        </div>
+      </header>
+
+      <main className="main-content">
+        {/* MyCare AI 2.0 Banner */}
+        <div className="ai-banner-wrapper">
+          <motion.section
+            className="ai-banner"
+            whileTap={{ scale: 0.98 }}
+            onClick={() => setShowAISelection(!showAISelection)}
+          >
+            <div className="ai-banner-content">
+              <div className="ai-badge">NEW</div>
+              <h3>MyCare AI 2.0</h3>
+              <p>Try Voice or Chat for faster Triage</p>
+            </div>
+            <Sparkles className="sparkle-float" color="white" size={32} />
+          </motion.section>
+
+          <AnimatePresence>
+            {showAISelection && (
+              <motion.div
+                className="ai-selection-overlay"
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+              >
+                <button onClick={() => { setStep('ai-triage'); setShowAISelection(false); }}>
+                  <Send size={20} /> Chat with AI
+                </button>
+                <div className="divider-h"></div>
+                <button onClick={() => { setStep('ai-voice'); setShowAISelection(false); }}>
+                  <Phone size={20} /> Voice Call AI
+                </button>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+
+        {/* MACC Banner */}
+        <section className="macc-banner">
+          <div className="macc-banner-bg"></div>
+          <div className="macc-banner-inner" onClick={() => setStep('macc')}>
+            <div className="macc-col">
+              <div className="macc-badge">EXCLUSIVE</div>
+              <div className="apollo-logo-v2">Apollo <span>Hospitals</span></div>
+              <h3>Co-Consultation</h3>
+              <p>India's best specialists collaborate with Mayapada</p>
+            </div>
+            <ChevronRight size={24} color="#0072bc" />
+          </div>
+        </section>
+
+        {/* Greeting Section */}
+        <section className="greeting-card">
+          <h2>Hello, Good Evening</h2>
+
+          <div className="quick-actions">
+            <motion.div className="action-item" whileHover={{ y: -5 }} whileTap={{ scale: 0.95 }}>
+              <div className="icon-circle">
+                <img src={medicalCheckup} alt="Medical Checkup" />
+              </div>
+              <span>Medical Checkup</span>
+            </motion.div>
+            <motion.div className="action-item" whileHover={{ y: -5 }} whileTap={{ scale: 0.95 }}>
+              <div className="icon-circle">
+                <img src={findDoctor} alt="Find Doctor" />
+              </div>
+              <span>Find Doctor</span>
+            </motion.div>
+            <motion.div className="action-item" whileHover={{ y: -5 }} whileTap={{ scale: 0.95 }}>
+              <div className="icon-circle">
+                <img src={bookAppointment} alt="Book Appointment" />
+              </div>
+              <span>Book Appointment</span>
+            </motion.div>
+            <motion.div className="action-item" whileHover={{ y: -5 }} whileTap={{ scale: 0.95 }}>
+              <div className="icon-circle">
+                <img src={moreServices} alt="More Service" />
+              </div>
+              <span>More Service</span>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Sync Data Banner */}
+        <motion.section
+          className="sync-banner"
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.2 }}
         >
-          <div className="health-card-icon">
-            <img src={healthTracker} alt="Health Tracker" />
+          <div className="sync-content">
+            <h3>Pernah berobat di unit Mayapada Hospital sebelumnya?</h3>
+            <p>Lakukan sinkronisasi data pasien agar terhubung ke rekam medis yang sesuai pada sistem kami</p>
+            <div className="sync-actions">
+              <button className="btn-sync">Sinkron Data</button>
+              <button className="btn-close">Tutup Pesan</button>
+            </div>
           </div>
-          <div className="health-card-body">
-            <h4>Health Tracker</h4>
-            <p>Google Fit lets you view your steps, bl...</p>
+        </motion.section>
+
+        {/* Health Articles */}
+        <section className="articles-section">
+          <div className="section-header">
+            <h3>Health Articles and Tips</h3>
+            <a href="#" className="see-more">See More</a>
           </div>
-          <button className="btn-connect">Connect</button>
-        </motion.div>
+          <div className="articles-scroll">
+            <div className="article-card">
+              <div className="article-image-wrapper">
+                <img src={articleHeart} alt="Heart Care" />
+                <span className="category-tag">Cardiovascular Center</span>
+              </div>
+              <div className="article-info">
+                <h4>Mengapa Perawatan Penyakit Jantung Terintegrasi Sangat Dib...</h4>
+                <p>Penyakit jantung tidak hanya berdampak pada organ jantung, tetapi juga kualitas hidup dan produktivitas sehari-hari.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Personal Health */}
+        <section className="personal-health">
+          <div className="section-header">
+            <h3>Personal Health</h3>
+          </div>
+
+          <motion.div
+            className="health-card"
+            whileHover={{ x: 5 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => setStep('remote-monitor')}
+          >
+            <div className="health-card-icon">
+              <img src={healthTracker} alt="Health Tracker" />
+            </div>
+            <div className="health-card-body">
+              <h4>Recovery Monitoring</h4>
+              <p>Automated follow-ups & vitals tracking</p>
+            </div>
+            <button className="btn-connect">View</button>
+          </motion.div>
         </section>
 
         {/* Emergency Call */}
